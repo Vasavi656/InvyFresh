@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h2>📊 Inventory Dashboard</h2>
+
+    <!-- Summary Stats -->
+    <div class="row my-4">
+        <div class="col-md-3">
+            <div class="card p-3 text-center bg-light">
+                <h4>Total Products</h4>
+                <p id="totalProducts">0</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center bg-light">
+                <h4>Total Orders</h4>
+                <p id="totalOrders">0</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-center bg-light">
+                <h4>Total Revenue</h4>
+                <p id="totalRevenue">₹0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts Section -->
+    <h3>⚠ Alerts</h3>
+    <ul>
+        <li th:each="alert : ${alerts}" th:text="${alert.message}"></li>
+    </ul>
+
+    <!-- Low Stock Products -->
+    <h3>📉 Low Stock Products</h3>
+    <ul id="lowStockList"></ul>
+
+    <script>
+        // Fetch dashboard stats from REST API
+        fetch("/api/dashboard/total-products").then(res => res.json()).then(data => {
+            document.getElementById("totalProducts").innerText = data;
+        });
+        fetch("/api/dashboard/total-orders").then(res => res.json()).then(data => {
+            document.getElementById("totalOrders").innerText = data;
+        });
+        fetch("/api/dashboard/total-revenue").then(res => res.json()).then(data => {
+            document.getElementById("totalRevenue").innerText = "₹" + data;
+        });
+        fetch("/api/dashboard/low-stock").then(res => res.json()).then(data => {
+            const list = document.getElementById("lowStockList");
+            data.forEach(prod => {
+                const li = document.createElement("li");
+                li.innerText = prod.name + " (Stock: " + prod.stock + ")";
+                list.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inventory Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>📊 Inventory Analytics</h1>
+
+    <!-- Stock Chart -->
+    <h2>Stock Levels</h2>
+    <canvas id="stockChart" width="75" height="75"></canvas>
+
+    <!-- Expiry Chart -->
+    <h2>Expiry Status</h2>
+    <canvas id="expiryChart" width="75" height="75"></canvas>
+
+    <script th:inline="javascript">
+        /* Stock Data from Controller */
+        let stockLabels = /*[[${stockLabels}]]*/ [[]];
+        let stockValues = /*[[${stockValues}]]*/ [[]];
+
+        let ctx1 = document.getElementById('stockChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                // x axis
+                labels: stockLabels,
+                datasets: [{
+                    label: 'Stock Levels',
+                    // y axis
+                    data: stockValues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        /* Expiry Data from Controller */
+        let expiryLabels = /*[[${expiryLabels}]]*/[[]];
+        let expiryValues = /*[[${expiryValues}]]*/ [[]];
+
+        let ctx2 = document.getElementById('expiryChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: expiryLabels,
+                datasets: [{
+                    label: 'Expiry Distribution',
+                    data: expiryValues,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
