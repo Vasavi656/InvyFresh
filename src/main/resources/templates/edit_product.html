@@ -7,14 +7,15 @@
     <h2>Edit Product</h2>
 
     <form th:action="@{'/products/update/' + ${product.id}}" method="post">
-        <input type="text" name="name" th:value="${product.name}" required />
-        <input type="text" name="category" th:value="${product.category}" required />
-        <input type="number" name="price" th:value="${product.price}" required />
-        <input type="number" name="stock" th:value="${product.stock}" required />
-        <input type="number" name="minStockLevel" th:value="${product.minStockLevel}" required />
+    <input type="text" name="name" th:value="${product.name}" required />
+    <input type="text" name="category" th:value="${product.category}" required />
+    <input type="number" name="price" th:value="${product.price}" required />
+    <input type="number" name="stock" th:value="${product.stock}" required />
+    <input type="number" name="minStockLevel" th:value="${product.minStockLevel}" required />
+    <input type="date" name="expiryDate" th:value="${product.expiryDate}" required /> <!-- ✅ Added -->
 
-        <button type="submit">Update</button>
-    </form>
+    <button type="submit">Update</button>
+</form>
 
     <br/>
     <a href="/products">Back to Products</a>

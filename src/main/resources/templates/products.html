@@ -32,41 +32,48 @@
     <!-- Product Table -->
     <table>
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Min Stock</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Existing Products -->
-            <tr th:each="product : ${products}" th:data-id="${product.id}">
-                <td th:text="${product.name}"></td>
-                <td th:text="${product.category}"></td>
-                <td th:text="${product.price}"></td>
-                <td th:text="${product.stock}"></td>
-                <td th:text="${product.minStockLevel}"></td>
-                <td>
-                    <button onclick="editRow(this)">Edit</button>
-                    <a th:href="@{'/products/delete/' + ${product.id}}"><button>Delete</button></a>
-                </td>
-            </tr>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Min Stock</th>
+        <th>Expiry Date</th>   <!-- ✅ Added -->
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+    <!-- Existing Products -->
+    <tr th:each="product : ${products}" th:data-id="${product.id}">
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.category}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.stock}"></td>
+        <td th:text="${product.minStockLevel}"></td>
+        <td th:text="${product.expiryDate}"></td> <!-- ✅ Added -->
+        <td>
+            <a th:href="@{'/products/edit/' + ${product.id}}">
+                <button>Edit</button>
+            </a>
+            <a th:href="@{'/products/delete/' + ${product.id}}">
+                <button>Delete</button>
+            </a>
+        </td>
+    </tr>
 
-            <!-- Row for Adding New Product -->
-            <tr class="add-row">
-                <form action="/products/add" method="post">
-                    <td><input type="text" name="name" required></td>
-                    <td><input type="text" name="category" required></td>
-                    <td><input type="number" name="price" step="0.01" required></td>
-                    <td><input type="number" name="stock" required></td>
-                    <td><input type="number" name="minStockLevel" required></td>
-                    <td><button type="submit">Add</button></td>
-                </form>
-            </tr>
-        </tbody>
+    <!-- Row for Adding New Product -->
+    <tr class="add-row">
+        <form action="/products/add" method="post">
+            <td><input type="text" name="name" required></td>
+            <td><input type="text" name="category" required></td>
+            <td><input type="number" name="price" step="0.01" required></td>
+            <td><input type="number" name="stock" required></td>
+            <td><input type="number" name="minStockLevel" required></td>
+            <td><input type="date" name="expiryDate" required></td> <!-- ✅ Added -->
+            <td><button type="submit">Add</button></td>
+        </form>
+    </tr>
+</tbody>
     </table>
 
     <script>

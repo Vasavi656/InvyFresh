@@ -54,9 +54,8 @@ public String updateProduct(@PathVariable String id, Product updatedProduct) {
         prod.setPrice(updatedProduct.getPrice());
         prod.setStock(updatedProduct.getStock());
         prod.setMinStockLevel(updatedProduct.getMinStockLevel());
+        prod.setExpiryDate(updatedProduct.getExpiryDate()); // ✅ Added
         productRepository.save(prod);
     });
     return "redirect:/products";
-}
-
-}
+}}
