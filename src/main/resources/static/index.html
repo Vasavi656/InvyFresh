@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inventory Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <h2>Inventory</h2>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="minstock.html">Min Stock</a></li>
+        <li><a href="expiry.html">Expiry</a></li>
+        <li><a href="products.html">Products</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <h1>Dashboard</h1>
+      <div class="cards">
+        <div class="card">
+          <h3>Total Products</h3>
+          <p id="totalProducts">0</p>
+        </div>
+        <div class="card">
+          <h3>Low Stock</h3>
+          <p id="lowStock">0</p>
+        </div>
+        <div class="card">
+          <h3>Expiring Soon</h3>
+          <p id="expiringSoon">0</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

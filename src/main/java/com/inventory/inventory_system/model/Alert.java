@@ -5,26 +5,24 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-// like a table name
-@Document(collection = "alerts")  // MongoDB collection name
+@Document(collection = "alerts")  
 public class Alert {
-
+    
     @Id
-    private String id;  // MongoDB uses String (ObjectId) for IDs
-
+    private String id; 
     private String message;
     private LocalDateTime createdAt;
 
-    // ✅ Default constructor
+    
     public Alert() {}
 
-    // ✅ Constructor with message
+    
     public Alert(String message) {
         this.message = message;
         this.createdAt = LocalDateTime.now();
     }
 
-    // ✅ Getters & Setters
+    
     public String getId() {
         return id;
     }

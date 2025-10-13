@@ -7,14 +7,12 @@
 <body>
     <h1>📊 Inventory Dashboard</h1>
 
-    <!-- Graphs Section -->
     <h2>Stock Chart</h2>
-    <canvas id="stockChart" width="200" height="200"></canvas>
+    <canvas id="stockChart" width="500" height="500"></canvas>
 
     <h2>Expiry Chart</h2>
-    <canvas id="expiryChart" width="200" height="200"></canvas>
+    <canvas id="expiryChart" width="500" height="500"></canvas>
 
-    <!-- Alerts Section -->
     <h2>⚠ Alerts (Live)</h2>
     <div id="alerts-container">Loading...</div>
 
@@ -24,53 +22,52 @@
     let expiryLabels = /*[[${expiryLabels}]]*/ [];
     let expiryValues = /*[[${expiryValues}]]*/ [];
 
-    // console.log("Stock Labels:", stockLabels);
-    // console.log("Stock Values:", stockValues);
-    // console.log("Expiry Labels:", expiryLabels);
-    // console.log("Expiry Values:", expiryValues);
-
-
-        new Chart(document.getElementById('stockChart'), {
-            type: 'bar',
-            data: {
-                labels: stockLabels,
-                datasets: [{
-                    label: 'Stock Levels',
-                    data: stockValues,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
-                }]
-            }
-        });
-
-        new Chart(document.getElementById('expiryChart'), {
-            type: 'pie',
-            data: {
-                labels: expiryLabels,
-                datasets: [{
-                    data: expiryValues,
-                    backgroundColor: ['#FF6384', '#FFCE56', '#36A2EB']
-                }]
-            }
-        });
-
-        async function loadAlerts() {
-            let response = await fetch("/api/alerts");
-            let alerts = await response.json();
-
-            let html = "<ul>";
-            alerts.forEach(a => {
-                let color = a.type === "EXPIRED" ? "red" :
-                            a.type === "LOW_STOCK" ? "orange" : "green";
-                html += `<li style="color:${color}">${a.message}</li>`;
-            });
-            html += "</ul>";
-
-            document.getElementById("alerts-container").innerHTML = html;
+    new Chart(document.getElementById('stockChart'), {
+        type: 'bar',
+        data: {
+            labels: stockLabels,
+            datasets: [{
+                label: 'Stock Levels',
+                data: stockValues,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }]
+        },
+        options: {
+            responsive: false   
         }
+    });
 
-        //used to refresh the page for every 10sec 
-        setInterval(loadAlerts, 10000);
-        loadAlerts();
+    new Chart(document.getElementById('expiryChart'), {
+        type: 'pie',
+        data: {
+            labels: expiryLabels,
+            datasets: [{
+                data: expiryValues,
+                backgroundColor: ['#FF6384', '#FFCE56', '#36A2EB']
+            }]
+        },
+        options: {
+            responsive: false   
+        }
+    });
+
+    async function loadAlerts() {
+        let response = await fetch("/api/alerts");
+        let alerts = await response.json();
+
+        let html = "<ul>";
+        alerts.forEach(a => {
+            let color = a.type === "EXPIRED" ? "red" :
+                        a.type === "LOW_STOCK" ? "orange" : "green";
+            html += `<li style="color:${color}">${a.message}</li>`;
+        });
+        html += "</ul>";
+
+        document.getElementById("alerts-container").innerHTML = html;
+    }
+
+    setInterval(loadAlerts, 10000);
+    loadAlerts();
     </script>
 </body>
 </html>

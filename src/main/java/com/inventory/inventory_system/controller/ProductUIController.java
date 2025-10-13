@@ -16,46 +16,43 @@ public class ProductUIController {
     @Autowired
     private ProductRepository productRepository;
 
-    // Show all products in table
     @GetMapping("/products")
     public String getAllProducts(Model model) {
         model.addAttribute("products", productRepository.findAll());
-        return "products";  // will load products.html
+        return "products";  
     }
 
-    // Add product from form
     @PostMapping("/products/add")
     public String addProduct(Product product) {
         productRepository.save(product);
         return "redirect:/products";
     }
 
-    // Delete product
     @GetMapping("/products/delete/{id}")
     public String deleteProduct(@PathVariable String id) {
         productRepository.deleteById(id);
         return "redirect:/products";
     }
-    // Show edit form
-@GetMapping("/products/edit/{id}")
-public String editProduct(@PathVariable String id, Model model) {
-    Product product = productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
-    model.addAttribute("product", product);
-    return "edit_product";  // links to edit_product.html
-}
 
-// Update product
-@PostMapping("/products/update/{id}")
-public String updateProduct(@PathVariable String id, Product updatedProduct) {
-    productRepository.findById(id).ifPresent(prod -> {
-        prod.setName(updatedProduct.getName());
-        prod.setCategory(updatedProduct.getCategory());
-        prod.setPrice(updatedProduct.getPrice());
-        prod.setStock(updatedProduct.getStock());
-        prod.setMinStockLevel(updatedProduct.getMinStockLevel());
-        prod.setExpiryDate(updatedProduct.getExpiryDate()); // ✅ Added
-        productRepository.save(prod);
-    });
-    return "redirect:/products";
-}}
+    @GetMapping("/products/edit/{id}")
+    public String editProduct(@PathVariable String id, Model model) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        model.addAttribute("product", product);
+        return "edit_product";  
+    }
+
+    @PostMapping("/products/update/{id}")
+    public String updateProduct(@PathVariable String id, Product updatedProduct) {
+        productRepository.findById(id).ifPresent(prod -> {
+            prod.setName(updatedProduct.getName());
+            prod.setCategory(updatedProduct.getCategory());
+            prod.setPrice(updatedProduct.getPrice());
+            prod.setStock(updatedProduct.getStock());
+            prod.setMinStockLevel(updatedProduct.getMinStockLevel());
+            prod.setExpiryDate(updatedProduct.getExpiryDate());
+            productRepository.save(prod);
+        });
+        return "redirect:/products";
+    }
+}

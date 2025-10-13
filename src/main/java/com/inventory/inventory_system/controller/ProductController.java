@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,29 +18,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.inventory.inventory_system.model.Product;
 import com.inventory.inventory_system.repository.ProductRepository;
-// import com.inventory.inventory_system.repository.SupplierRepository;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500") 
 @RequestMapping("/api/products")
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    // @Autowired
-    // private SupplierRepository supplierRepository;
+    @GetMapping("/test")
+    public List<Product> testFetch() {
+        List<Product> products = productRepository.findAll();
+        System.out.println("Fetched: " + products.size());
+        products.forEach(System.out::println);
+        return products;
+    }
+
     @GetMapping
     public List<Product> getAllProducts(){
         return productRepository.findAll();
     } 
+    @PostMapping
+    public ResponseEntity<String> postProduct(@RequestBody Product prod){
+        LocalDate today = LocalDate.now();
+        if(prod.getExpiryDate() != null && !prod.getExpiryDate().isAfter(today)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Cannot add expired product.");
+        }
 
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable  String id){
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        productRepository.save(prod);
+        return ResponseEntity.ok("Product added successfully.");
     }
 
-    @PostMapping
-    public void postProduct(@RequestBody Product prod){
-        productRepository.save(prod);
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable String id){
+        return productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     @DeleteMapping("/{id}")
@@ -47,16 +63,15 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product putProduct(@PathVariable String id,@RequestBody Product updatedProduct){
+    public Product putProduct(@PathVariable String id, @RequestBody Product updatedProduct){
         return productRepository.findById(id).map(prod -> {
             prod.setName(updatedProduct.getName());
-                prod.setCategory(updatedProduct.getCategory());
-                prod.setPrice(updatedProduct.getPrice());
-                prod.setStock(updatedProduct.getStock());
-                prod.setMinStockLevel(updatedProduct.getMinStockLevel());
-                // prod.setSupplierId(updatedProduct.getSupplierId());
-                return productRepository.save(prod);
-        }).orElse(null);
+            prod.setCategory(updatedProduct.getCategory());
+            prod.setPrice(updatedProduct.getPrice());
+            prod.setStock(updatedProduct.getStock());
+            prod.setMinStockLevel(updatedProduct.getMinStockLevel());
+            return productRepository.save(prod);
+        }).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     @GetMapping("/search")
@@ -74,35 +89,15 @@ public class ProductController {
         return productRepository.findByPriceBetween(min, max);
     }
 
-    // @GetMapping("/{id}/with-supplier")
-    // public ProductWithSupplierDTO getProductWithSupplier(@PathVariable String id){
-    //     Product product =productRepository.findById(id).orElseThrow(()->new RuntimeException("product not found"));
-    //     Supplier supplier=null;
-    //     if(product.getSupplierId()!=null){
-    //         supplier=supplierRepository.findById(product.getSupplierId()).orElse(null);
-    //     }
-    //     return new ProductWithSupplierDTO(
-    //         product.getId(),
-    //         product.getName(),
-    //         product.getCategory(),
-    //         product.getPrice(),
-    //         product.getStock(),
-    //         product.getMinStockLevel(),
-    //         supplier
-    //     );
-    // }
     @GetMapping("/low-stock")
-public List<Product> getLowStockProducts() {
-    return productRepository.findByStockLessThanEqual(5); 
-    // 5 is a threshold, you can make it dynamic
-}
+    public List<Product> getLowStockProducts() {
+        return productRepository.findByStockLessThanEqual(5);
+    }
 
-@GetMapping("/expiring-soon")
-public List<Product> getExpiringSoon(@RequestParam(defaultValue = "7") int days) {
-    LocalDate today = LocalDate.now();
-    LocalDate threshold = today.plusDays(days);
-    return productRepository.findByExpiryDateBetween(today, threshold);
-}
-
-
+    @GetMapping("/expiring-soon")
+    public List<Product> getExpiringSoon(@RequestParam(defaultValue = "7") int days) {
+        LocalDate today = LocalDate.now();
+        LocalDate threshold = today.plusDays(days);
+        return productRepository.findByExpiryDateBetween(today, threshold);
+    }
 }

@@ -30,8 +30,8 @@ public class AlertService {
         alertRepository.save(alert);
     }
     }
-
-    @Scheduled(cron = "0 0 8 * * ?")  // runs daily at 8 AM
+    
+    @Scheduled(cron = "0 0 8 * * ?")  
     public void checkAlerts() {
         List<Product> lowStock = productRepository.findAll().stream()
                 .filter(p -> p.getStock() <= p.getMinStockLevel())
@@ -42,13 +42,6 @@ public class AlertService {
                             !p.getExpiryDate().isBefore(LocalDate.now()) &&
                             !p.getExpiryDate().isAfter(LocalDate.now().plusDays(7)))
                 .toList();
-
-        // this only prints data in console
-        // if (!lowStock.isEmpty() || !expiring.isEmpty()) {
-        //     System.out.println("⚠ Inventory Alert: Check low stock or expiring items!");
-        // }
-    // Save alerts in MongoDB
-    // give real time alerts
         for (Product p : lowStock) {
             alertRepository.save(new Alert("⚠ Low stock: " + p.getName() + " has only " + p.getStock() + " items left!"));
         }

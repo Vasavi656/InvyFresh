@@ -18,13 +18,11 @@ public class AlertController {
     @Autowired
     private AlertRepository alertRepository;
 
-    // Get all alerts
     @GetMapping
     public List<Alert> getAllAlerts() {
         return alertRepository.findAll();
     }
 
-    // Clear all alerts (optional)
     @DeleteMapping
     public String clearAlerts() {
         alertRepository.deleteAll();

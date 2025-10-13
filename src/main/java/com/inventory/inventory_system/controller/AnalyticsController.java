@@ -24,7 +24,6 @@ public class AnalyticsController {
     public String showAnalytics(Model model) {
         List<Product> products = productRepository.findAll();
 
-        // Stock data
         List<String> stockLabels = products.stream()
                 .map(Product::getName)
                 .collect(Collectors.toList());
@@ -33,7 +32,6 @@ public class AnalyticsController {
                 .map(Product::getStock)
                 .collect(Collectors.toList());
 
-        // Expiry data (categorize products)
         long expiringSoon = products.stream()
                 .filter(p -> p.getExpiryDate() != null &&
                         p.getExpiryDate().isBefore(LocalDate.now().plusDays(7)))

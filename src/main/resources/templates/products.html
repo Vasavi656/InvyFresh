@@ -29,7 +29,6 @@
 <body>
     <h2 style="text-align:center;">📦 Product Inventory</h2>
 
-    <!-- Product Table -->
     <table>
         <thead>
     <tr>
@@ -38,19 +37,18 @@
         <th>Price</th>
         <th>Stock</th>
         <th>Min Stock</th>
-        <th>Expiry Date</th>   <!-- ✅ Added -->
+        <th>Expiry Date</th> 
         <th>Actions</th>
     </tr>
 </thead>
 <tbody>
-    <!-- Existing Products -->
     <tr th:each="product : ${products}" th:data-id="${product.id}">
         <td th:text="${product.name}"></td>
         <td th:text="${product.category}"></td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.stock}"></td>
         <td th:text="${product.minStockLevel}"></td>
-        <td th:text="${product.expiryDate}"></td> <!-- ✅ Added -->
+        <td th:text="${product.expiryDate}"></td> 
         <td>
             <a th:href="@{'/products/edit/' + ${product.id}}">
                 <button>Edit</button>
@@ -61,7 +59,6 @@
         </td>
     </tr>
 
-    <!-- Row for Adding New Product -->
     <tr class="add-row">
         <form action="/products/add" method="post">
             <td><input type="text" name="name" required></td>
@@ -69,7 +66,7 @@
             <td><input type="number" name="price" step="0.01" required></td>
             <td><input type="number" name="stock" required></td>
             <td><input type="number" name="minStockLevel" required></td>
-            <td><input type="date" name="expiryDate" required></td> <!-- ✅ Added -->
+            <td><input type="date" name="expiryDate" required></td> 
             <td><button type="submit">Add</button></td>
         </form>
     </tr>
@@ -80,14 +77,11 @@
         function editRow(button) {
             let row = button.closest("tr");
             let cells = row.querySelectorAll("td");
-
-            // Convert text into input fields
             for (let i = 0; i < cells.length - 1; i++) {
                 let value = cells[i].innerText;
                 cells[i].innerHTML = `<input type="text" value="${value}">`;
             }
 
-            // Change Edit -> Save
             button.textContent = "Save";
             button.setAttribute("onclick", "saveRow(this)");
         }
@@ -105,13 +99,12 @@
                 minStockLevel: inputs[4].value
             };
 
-            // Send update via fetch API
             fetch(`/products/update/${id}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedProduct)
             }).then(() => {
-                location.reload(); // reload page to show updated values
+                location.reload(); 
             });
         }
     </script>

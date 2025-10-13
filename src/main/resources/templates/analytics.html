@@ -7,16 +7,13 @@
 <body>
     <h1>📊 Inventory Analytics</h1>
 
-    <!-- Stock Chart -->
     <h2>Stock Levels</h2>
     <canvas id="stockChart" width="75" height="75"></canvas>
 
-    <!-- Expiry Chart -->
     <h2>Expiry Status</h2>
     <canvas id="expiryChart" width="75" height="75"></canvas>
 
     <script th:inline="javascript">
-        /* Stock Data from Controller */
         let stockLabels = /*[[${stockLabels}]]*/ [[]];
         let stockValues = /*[[${stockValues}]]*/ [[]];
 
@@ -24,11 +21,9 @@
         new Chart(ctx1, {
             type: 'bar',
             data: {
-                // x axis
                 labels: stockLabels,
                 datasets: [{
                     label: 'Stock Levels',
-                    // y axis
                     data: stockValues,
                     backgroundColor: 'rgba(54, 162, 235, 0.6)'
                 }]
@@ -41,7 +36,7 @@
             }
         });
 
-        /* Expiry Data from Controller */
+        
         let expiryLabels = /*[[${expiryLabels}]]*/[[]];
         let expiryValues = /*[[${expiryValues}]]*/ [[]];
 

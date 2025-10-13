@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Products</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/products.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <h2>Inventory</h2>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="minstock.html">Min Stock</a></li>
+        <li><a href="expiry.html">Expiry</a></li>
+        <li><a href="products.html" class="active">Products</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <h1>Product Management</h1>
+
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <input type="text" id="name" placeholder="Product Name" required>
+        <input type="number" id="stock" placeholder="Stock" required>
+        <input type="number" id="minStock" placeholder="Min Stock" required>
+        <input type="date" id="expiryDate" required>
+        <button type="submit">Save</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Stock</th><th>Min</th><th>Expiry</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="productTable"></tbody>
+      </table>
+    </main>
+  </div>
+</body>
+</html>

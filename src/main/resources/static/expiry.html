@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expiry Alerts</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/expiry.js" defer></script>
+</head>
+<style>
+  #expiryChart {
+  width: 100%;
+  max-width: 400px;  
+  height: 400px;    
+  margin: 30px auto;  
+  display: block;    
+  }
+</style>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <h2>Inventory</h2>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="minstock.html">Min Stock</a></li>
+        <li><a href="expiry.html" class="active">Expiry</a></li>
+        <li><a href="products.html">Products</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+  <h1>Expiring/Expired Products</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Expiry Date</th><th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="expiryTable"></tbody>
+  </table>
+
+  <div style="max-width: 400px; margin: 30px auto;">
+    <canvas id="expiryChart"></canvas>
+  </div>
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/expiry.js" defer></script>
+
+  </div>
+</body>
+</html>
