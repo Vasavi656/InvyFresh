@@ -95,9 +95,18 @@ public class ProductController {
     }
 
     @GetMapping("/expiring-soon")
-    public List<Product> getExpiringSoon(@RequestParam(defaultValue = "7") int days) {
-        LocalDate today = LocalDate.now();
-        LocalDate threshold = today.plusDays(days);
-        return productRepository.findByExpiryDateBetween(today, threshold);
-    }
+public List<Product> getExpiringSoon(@RequestParam(defaultValue = "7") int days) {
+
+    LocalDate today = LocalDate.now();
+    LocalDate threshold = today.plusDays(days);
+
+    return productRepository.findAll().stream()
+            .filter(p -> p.getExpiryDate() != null)
+            .filter(p -> 
+                p.getExpiryDate().isBefore(today) ||                     
+                ( !p.getExpiryDate().isBefore(today) &&                  
+                  p.getExpiryDate().isBefore(threshold) )                 
+            )
+            .toList();
+}
 }
