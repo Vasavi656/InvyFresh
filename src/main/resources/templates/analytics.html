@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Alerts - StockGuard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">Inventory Analytics</h2>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h5>Low Stock Distribution</h5>
+                <canvas id="stockPie"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h5>Expiry Status</h5>
+                <canvas id="expiryPie"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    const lowStock = /*[[${lowStock}]]*/ 0;
+    const normal = /*[[${normal}]]*/ 0;
+
+    const expired = /*[[${expired}]]*/ 0;
+    const nearExpiry = /*[[${nearExpiry}]]*/ 0;
+    const safe = /*[[${safe}]]*/ 0;
+
+    /*]]>*/
+
+    new Chart(document.getElementById('stockPie'), {
+        type: 'pie',
+        data: {
+            labels: ['Low Stock', 'Normal'],
+            datasets: [{
+                data: [lowStock, normal],
+                backgroundColor: ['#dc3545', '#198754']
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('expiryPie'), {
+        type: 'pie',
+        data: {
+            labels: ['Expired', 'Near Expiry', 'Safe'],
+            datasets: [{
+                data: [expired, nearExpiry, safe],
+                backgroundColor: ['#000000', '#ffc107', '#0d6efd']
+            }]
+        }
+    });
+
+</script>
+
+</body>
+</html>
