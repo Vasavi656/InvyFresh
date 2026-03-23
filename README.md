@@ -1,6 +1,6 @@
-# StockGuard  
+# InvyFresh  
 
-StockGuard is a backend-focused inventory management system designed to help businesses track stock levels, monitor product expiry dates, and generate automatic alerts to prevent shortages and losses.  
+InvyFresh is a backend-focused inventory management system designed to help businesses track stock levels, monitor product expiry dates, and generate automatic alerts to prevent shortages and losses.  
 The system emphasizes business logic, automation, and alert handling using Spring Boot
 
 ---
